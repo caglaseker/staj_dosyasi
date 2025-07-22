@@ -4,40 +4,74 @@
  * her özellik için ayrı başlatıcı fonksiyonlar tanımlandı.
  */
 document.addEventListener('DOMContentLoaded', () => {
+  initHamburgerMenu(); // YENİ EKLENDİ
   initSlider();
   initProductCategories();
   initAuthForms();
   initCart();
 });
 
+/* ------------------------- Hamburger Menü (YENİ) ---------------------- */
+function initHamburgerMenu() {
+  const hamburgerBtn = document.querySelector('.hamburger-menu');
+  const navMenu = document.querySelector('.main-nav');
+
+  // Eğer sayfada bu elemanlar yoksa fonksiyonu çalıştırma
+  if (!hamburgerBtn || !navMenu) {
+    return;
+  }
+
+  hamburgerBtn.addEventListener('click', () => {
+    // Menüye 'active' class'ını ekleyip çıkararak görünürlüğünü kontrol et
+    navMenu.classList.toggle('active');
+  });
+}
+
 /* -------------------------------- Slider -------------------------------- */
 function initSlider() {
-  const dots = document.querySelectorAll('.dot');
-  if (!dots.length) return;
+  const heroImages = document.querySelectorAll('.hero-img'); // Tüm hero görsellerini al
+  const dots = document.querySelectorAll('.dot'); // Tüm navigasyon noktalarını al
 
-  let currentSlide = 0;
+  // Eğer görseller veya noktalar yoksa fonksiyonu çalıştırma
+  if (!heroImages.length || !dots.length) {
+    return;
+  }
+
+  let currentSlide = 0; // Mevcut slaytın indeksi
+  let slideInterval; // Otomatik slayt geçişi için interval ID'si
 
   const updateSlider = () => {
-    dots.forEach((dot, index) => {
-      dot.classList.toggle('active', index === currentSlide);
-    });
+    // Tüm görsellerden ve noktalardan 'active' sınıfını kaldır
+    heroImages.forEach(img => img.classList.remove('active'));
+    dots.forEach(dot => dot.classList.remove('active'));
+
+    // Mevcut slayt ve noktaya 'active' sınıfını ekle
+    heroImages[currentSlide].classList.add('active');
+    dots[currentSlide].classList.add('active');
   };
 
-  // Otomatik slayt geçişi (5 sn)
-  setInterval(() => {
-    currentSlide = (currentSlide + 1) % dots.length;
-    updateSlider();
-  }, 5000);
+  // Otomatik slayt geçişini başlatan fonksiyon
+  const startAutoSlide = () => {
+    // Mevcut interval'i temizle (tekrar tekrar başlamamak için)
+    clearInterval(slideInterval);
+    slideInterval = setInterval(() => {
+      currentSlide = (currentSlide + 1) % heroImages.length; // Sonraki slayta geç, sona gelince başa dön
+      updateSlider(); // Slider'ı güncelle
+    }, 5000); // Her 5 saniyede bir geçiş yap
+  };
 
   // Noktalara tıklama ile slayt değişimi
   dots.forEach((dot, index) => {
     dot.addEventListener('click', () => {
-      currentSlide = index;
-      updateSlider();
+      currentSlide = index; // Tıklanan noktanın indeksini mevcut slayt yap
+      updateSlider(); // Slider'ı güncelle
+      startAutoSlide(); // Otomatik geçişi sıfırla ve yeniden başlat
     });
   });
 
-  updateSlider();
+  // Slider'ı başlangıçta ve otomatik olarak başlat
+  updateSlider(); // İlk slaytı göster
+  startAutoSlide(); // Otomatik geçişi başlat
 }
 
 /* ------------------------- Ürün Kategorileri ---------------------------- */
@@ -47,53 +81,31 @@ function initProductCategories() {
 
   categoryButtons.forEach(button => {
     button.addEventListener('click', () => {
+      // Önce tüm butonlardan 'active' class'ını kaldır
       categoryButtons.forEach(btn => btn.classList.remove('active'));
+      // Sadece tıklanan butona 'active' class'ını ekle
       button.classList.add('active');
-
-      // Burada kategoriye göre filtreleme yapılabilir
-      const category = button.textContent.trim().toLowerCase();
-      console.log('Seçilen kategori:', category);
     });
   });
 }
 
-/* ---------------------------- Giriş / Kayıt ----------------------------- */
+/* ---------------------------- Auth Formları ----------------------------- */
 function initAuthForms() {
-  const loginTab = document.getElementById('tab-login');
-  const registerTab = document.getElementById('tab-register');
-  const loginForm = document.querySelector('.auth-form-login');
-  const registerForm = document.querySelector('.auth-form-register');
-  const eyeIcons = document.querySelectorAll('.auth-eye');
+  const passwordInput = document.querySelector('.auth-password-row input');
+  const eyeIcon = document.querySelector('.auth-eye');
+  if (!passwordInput || !eyeIcon) return;
 
-  if (!(loginTab && registerTab && loginForm && registerForm)) return;
-
-  const toggleTabs = isLoginActive => {
-    loginTab.classList.toggle('active', isLoginActive);
-    registerTab.classList.toggle('active', !isLoginActive);
-    loginForm.style.display = isLoginActive ? 'flex' : 'none';
-    registerForm.style.display = isLoginActive ? 'none' : 'flex';
-  };
-
-  loginTab.addEventListener('click', () => toggleTabs(true));
-  registerTab.addEventListener('click', () => toggleTabs(false));
-
-  // Şifre görünürlüğü
-  eyeIcons.forEach(icon => {
-    icon.addEventListener('click', () => {
-      const input = icon.previousElementSibling;
-      if (!input) return;
-      const isHidden = input.type === 'password';
-      input.type = isHidden ? 'text' : 'password';
-      icon.textContent = isHidden ? '👁️‍🗨️' : '👁️';
-    });
+  eyeIcon.addEventListener('click', () => {
+    const isPassword = passwordInput.type === 'password';
+    passwordInput.type = isPassword ? 'text' : 'password';
+    eyeIcon.textContent = isPassword ? '🙈' : '👁️';
   });
 }
 
-/* --------------------------------- Sepet -------------------------------- */
+/* --------------------------- Sepet İşlemleri ---------------------------- */
 function initCart() {
   const quantityBtns = document.querySelectorAll('.quantity-btn');
   const removeButtons = document.querySelectorAll('.cart-item-remove');
-
   if (!quantityBtns.length) return;
 
   // Adet artır/azalt
@@ -134,12 +146,11 @@ function updateCartTotal() {
   if (!(priceEls.length && qtyInputs.length && totalEl)) return;
 
   let total = 0;
-  priceEls.forEach((priceEl, idx) => {
-    // "299.90 TL" -> 299.90
-    const numericPrice = parseFloat(priceEl.textContent.replace(/[^0-9,\.]/g, '').replace(',', '.')) || 0;
-    const qty = parseInt(qtyInputs[idx].value, 10) || 0;
-    total += numericPrice * qty;
+  priceEls.forEach((priceEl, index) => {
+    const price = parseFloat(priceEl.textContent.replace('₺', '').replace(',', '.')) || 0;
+    const quantity = parseInt(qtyInputs[index].value, 10) || 1;
+    total += price * quantity;
   });
 
-  totalEl.textContent = `${total.toFixed(2)} TL`;
-} 
+  totalEl.textContent = `₺${total.toFixed(2).replace('.', ',')}`;
+}
