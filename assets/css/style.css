@@ -10,14 +10,22 @@ body {
   line-height: 1.6;
 }
 
-/* Header styles */
+/* === HEADER STİLLERİ (GÜNCELLENDİ) === */
 header {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /* Space out items */
   align-items: center;
   padding: 1rem;
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  position: relative; /* z-index için */
+  z-index: 1001; /* Menünün diğer elemanların üzerinde kalması için */
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* Buton ve logo arası boşluk */
 }
 
 .header-left .logo {
@@ -27,14 +35,35 @@ header {
   font-weight: bold;
 }
 
+/* Hamburger Menü Butonu */
+.hamburger-menu {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hamburger-menu svg {
+  color: #333;
+  width: 28px;
+  height: 28px;
+}
+
+/* Sağdaki ikonlar */
 .header-right {
   display: flex;
-  gap: 1rem;
+  gap: 1rem; /* İkonlar arası boşluk */
 }
 
 .header-icon-link {
   color: #333;
   text-decoration: none;
+  display: flex; /* SVG'yi ortalamak için */
+  align-items: center;
+  justify-content: center;
 }
 
 .header-icon-link.active {
@@ -48,7 +77,53 @@ header {
 .header-icon {
   display: flex;
   align-items: center;
+  /* SVG default boyutu 24x24 olduğu için ek bir stil gerekmez,
+     ancak tutarlılık için eklenebilir. */
+  width: 24px;
+  height: 24px;
 }
+
+
+/* Ana Navigasyon Menüsü */
+.main-nav {
+  background-color: #fff;
+  max-height: 0; /* Başlangıçta kapalı */
+  overflow: hidden;
+  transition: max-height 0.4s ease-in-out; /* Yumuşak açılıp kapanma efekti */
+  border-bottom: 1px solid transparent; /* Aktif olunca görünecek border için hazırlık */
+}
+
+.main-nav.active {
+  max-height: 80px; /* Menü açıldığındaki yükseklik */
+  border-bottom-color: #eee; /* Menü açıkken alt çizgi */
+}
+
+.main-nav ul {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  height: 70px; /* Navigasyon barının yüksekliği */
+  gap: 2rem; /* Linkler arası boşluk */
+}
+
+.main-nav a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  font-size: 1.1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: color 0.2s;
+}
+
+.main-nav a:hover {
+  color: #2c78c5; /* Linklerin üzerine gelince renk değişimi */
+}
+/* === HEADER STİLLERİ BİTİŞ === */
+
 
 /* Hero section styles */
 .hero-bg {
@@ -61,6 +136,15 @@ header {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  position: absolute; /* Position images for overlay */
+  top: 0;
+  left: 0;
+  opacity: 0; /* Hide all images by default */
+  transition: opacity 0.5s ease-in-out; /* Smooth fade effect */
+}
+
+.hero-img.active {
+  opacity: 1; /* Show active image */
 }
 
 .slider-campaign {
@@ -73,6 +157,7 @@ header {
   background-color: rgba(0,0,0,0.7);
   padding: 2rem;
   border-radius: 8px;
+  z-index: 10; /* Ensure content is above images */
 }
 
 .slider-content h1 {
@@ -89,6 +174,31 @@ header {
   border-radius: 4px;
   margin: 1rem 0;
 }
+
+/* Slider Dots */
+.slider-dots {
+  position: absolute;
+  bottom: 20px; /* Position above the bottom edge */
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px; /* Space between dots */
+  z-index: 11; /* Ensure dots are above content and images */
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent white */
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.dot.active {
+  background-color: #fff; /* Solid white when active */
+}
+
 
 /* Footer styles */
 footer {
@@ -296,30 +406,33 @@ footer {
 
 /* Auth page styles */
 .auth-container {
-  display: flex;
-  min-height: calc(100vh - 140px);
+  display: flex; /* Establishes a flex container */
+  min-height: calc(100vh - 140px); /* Adjust as needed */
   max-width: 1200px;
   margin: 0 auto;
   gap: 2rem;
+  padding: 2rem; /* Add padding for overall container */
 }
 
 .auth-form-area {
-  flex: 1;
+  flex: 1; /* Allows form area to grow */
   padding: 2rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  max-width: 500px;
-  margin: 0 auto;
+  max-width: 500px; /* Limit form width */
+  margin: 0 auto; /* Center the form area */
 }
 
 .auth-image-area {
-  flex: 0 0 400px;
-  display: none;
+  flex: 0 0 400px; /* Fixed width for image area on larger screens */
+  display: flex; /* Initially flex, hidden on small screens */
   align-items: center;
   justify-content: center;
   padding: 2rem;
   background-color: #f5f5f5;
+  border-radius: 8px; /* Match form container border-radius */
+  overflow: hidden; /* Ensure image stays within bounds */
 }
 
 .auth-image {
@@ -332,8 +445,9 @@ footer {
 
 .auth-tabs {
   display: flex;
-  gap: 1rem;
+  position: relative; /* For the underline effect */
   margin-bottom: 2rem;
+  border-bottom: 1px solid #eee; /* Light line below tabs */
 }
 
 .auth-tab {
@@ -344,12 +458,23 @@ footer {
   font-size: 1.1rem;
   color: #666;
   cursor: pointer;
-  border-bottom: 2px solid #eee;
+  position: relative;
+  transition: color 0.3s;
+  font-weight: bold; /* Make tab text bold */
 }
 
 .auth-tab.active {
-  color: #2c78c5;
-  border-bottom-color: #2c78c5;
+  color: #333; /* Darker color for active tab */
+}
+
+.auth-tab.active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -1px; /* Adjust to sit on the border */
+  width: 100%;
+  height: 2px;
+  background-color: #333; /* Darker line for active tab */
 }
 
 .auth-form {
@@ -358,11 +483,13 @@ footer {
   gap: 1rem;
 }
 
-.auth-form input:not([type="checkbox"]) {
+.auth-form input:not([type="checkbox"]),
+.auth-form select { /* Apply to select as well */
   padding: 1rem;
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 1rem;
+  background-color: #fff; /* White background for inputs */
 }
 
 .auth-form-row {
@@ -377,6 +504,13 @@ footer {
 
 .auth-password-row {
   position: relative;
+  display: flex; /* Ensure input and eye align */
+  align-items: center; /* Vertically center items */
+}
+
+.auth-password-row input {
+  flex: 1; /* Allow input to take available space */
+  padding-right: 3rem; /* Make space for the eye icon */
 }
 
 .auth-eye {
@@ -386,28 +520,59 @@ footer {
   transform: translateY(-50%);
   cursor: pointer;
   user-select: none;
+  display: flex; /* To center the SVG */
+  align-items: center;
+  justify-content: center;
+  color: #666; /* Color for the eye icon */
+}
+
+.auth-eye svg {
+  width: 20px; /* Adjust size of eye icon */
+  height: 20px;
+  stroke: currentColor; /* Inherit color from parent */
 }
 
 .auth-options {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 0.5rem; /* Add some space above options */
+  font-size: 0.9rem; /* Smaller font for options */
+}
+
+.auth-options label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #666;
 }
 
 .auth-forgot {
-  color: #2c78c5;
+  color: #333; /* Darker color for forgot password */
   text-decoration: none;
+  font-weight: 600; /* Make it a bit bolder */
 }
 
 .auth-submit {
   padding: 1rem;
-  background: #2c78c5;
-  color: white;
+  background: #e0e0e0; /* Grey background for buttons */
+  color: #333; /* Darker text color */
   border: none;
   border-radius: 4px;
   font-size: 1.1rem;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-weight: bold; /* Make button text bold */
+  margin-top: 1rem; /* Space above the button */
 }
+
+.auth-submit:hover {
+  background-color: #d0d0d0; /* Slightly darker grey on hover */
+}
+
+/* İletişim Formu Stilleri (existing, moved to ensure proper cascade) */
+.contact-form-container{max-width:800px;margin:2rem auto;background-color:#fff;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,.1);overflow:hidden;padding-bottom:1.5rem}.contact-form-title{background-color:#e0f0ff;color:#333;padding:1.5rem;text-align:center;font-size:1.5rem;font-weight:500;margin-bottom:2rem}.contact-form{display:flex;flex-direction:column;gap:1rem;padding:0 1.5rem}.contact-form-row{display:flex;gap:1rem}.contact-form-row input{flex:1}.contact-form input,.contact-form textarea{width:100%;padding:1rem;border:none;background-color:#f0f2f5;border-radius:6px;font-size:1rem;font-family:inherit}.contact-form-message{min-height:150px;resize:vertical}.contact-form-submit{align-self:flex-end;padding:.8rem 2rem;border:none;background-color:#d9e9f7;color:#333;font-weight:700;border-radius:6px;cursor:pointer;transition:background-color .3s}.contact-form-submit:hover{background-color:#cce0f2}
+
 
 /* Responsive design */
 @media (max-width: 768px) {
@@ -517,27 +682,56 @@ footer {
     margin: 1rem 0;
   }
 
-  .auth-form-row {
-    flex-direction: column;
-  }
-
-  .auth-options {
-    flex-direction: column;
-    gap: 1rem;
-  }
-
+  /* Auth page mobile styles */
   .auth-container {
+    flex-direction: column; /* Stack elements vertically */
     padding: 1rem;
+    gap: 1.5rem; /* Adjust gap for mobile */
   }
 
   .auth-form-area {
-    padding: 1rem;
+    width: 100%; /* Full width on mobile */
+    max-width: none; /* Remove max-width restriction */
+    padding: 1rem; /* Adjust padding */
   }
+
+  .auth-image-area {
+    display: none; /* Hide image on smaller screens */
+  }
+
+  .auth-form-row {
+    flex-direction: column; /* Stack input rows vertically */
+    gap: 0.75rem; /* Adjust gap */
+  }
+
+  .auth-options {
+    flex-direction: column; /* Stack options vertically */
+    gap: 0.75rem; /* Adjust gap */
+    align-items: flex-start; /* Align items to the start */
+  }
+
+  .auth-tab {
+    font-size: 1rem; /* Slightly smaller font for tabs */
+  }
+
+  .auth-submit {
+    width: 100%; /* Full width button */
+  }
+
+  .main-nav ul {
+    gap: 0.5rem;
+    justify-content: space-around;
+  }
+  .main-nav a {
+    font-size: 0.9rem;
+    padding: 0.5rem;
+  }
+  .contact-form-row{flex-direction:column}.contact-form-container{margin:1rem}.contact-form-submit{width:100%;text-align:center}
 }
 
 @media (min-width: 1024px) {
   .auth-image-area {
-    display: flex;
+    display: flex; /* Show image on larger screens */
   }
 }
 
@@ -551,4 +745,4 @@ footer {
   .product-img {
     height: 220px;
   }
-} 
+}
