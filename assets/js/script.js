@@ -27,6 +27,7 @@ function initHamburgerMenu() {
   });
 }
 
+
 /* -------------------------------- Slider -------------------------------- */
 function initSlider() {
   const heroImages = document.querySelectorAll('.hero-img'); // Tüm hero görsellerini al

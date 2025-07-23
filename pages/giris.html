@@ -16,6 +16,7 @@
           <line x1="3" y1="18" x2="21" y2="18"/>
         </svg>
       </button>
+      <!-- LOGO BAĞLANTISI DÜZELTİLDİ: Bir üst dizine çıkmak için '../' eklendi -->
       <a href="../index.html" class="logo">egedeniz</a>
     </div>
     <div class="header-right">
@@ -39,6 +40,17 @@
       </a>
     </div>
   </header>
+
+  <!-- EKSİK OLAN NAV MENÜSÜ BURAYA EKLENDİ -->
+  <nav class="main-nav">
+    <ul>
+      <li><a href="../index.html">Ana Sayfa</a></li>
+      <li><a href="urunler.html">Ürünler</a></li>
+      <li><a href="hakkimizda.html">Hakkımızda</a></li>
+      <li><a href="iletisim.html">İletişim</a></li>
+    </ul>
+  </nav>
+
   <main>
     <div class="auth-container">
       <div class="auth-form-area">
@@ -99,12 +111,20 @@
     </div>
     <div>© 2024 egedeniz. Tüm hakları saklıdır.</div>
   </footer>
+  <script src="../assets/js/script.js"></script>
+  <!-- NOTE: The inline script for auth forms should ideally be moved to script.js -->
+  <!-- For now, it remains here to ensure existing functionality is not broken -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       const loginTab = document.getElementById('tab-login');
       const registerTab = document.getElementById('tab-register');
       const loginForm = document.querySelector('.auth-form-login');
       const registerForm = document.querySelector('.auth-form-register');
+
+      if (!loginTab || !registerTab || !loginForm || !registerForm) {
+        // Eğer bu elemanlardan biri yoksa fonksiyonu çalıştırma
+        return;
+      }
 
       loginTab.addEventListener('click', function() {
         loginTab.classList.add('active');
@@ -135,8 +155,6 @@
         });
       });
     });
-    
   </script>
-<script src="../assets/js/script.js"></script>
 </body>
 </html>
