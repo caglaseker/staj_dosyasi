@@ -1,8 +1,7 @@
-# Egedeniz Tatil Platformu
+# Egedeniz Tektil Platformu
 
 ## Proje Hakkında
 
-Egedeniz Tatil Platformu, Türkiye'nin Ege ve Akdeniz kıyılarındaki tatil destinasyonlarını keşfetmek, incelemek ve rezervasyon yapmak için tasarlanmış modern bir web uygulamasıdır. Kullanıcı dostu arayüzü ve kapsamlı özellikleriyle, tatil planlamasını kolaylaştırmayı hedeflemektedir.
 
 ## Özellikler
 
