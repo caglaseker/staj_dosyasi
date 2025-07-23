@@ -1,5 +1,3 @@
-# Staj_Dosyasi
-
 # Egedeniz Tatil Platformu
 
 ## Proje Hakkında
